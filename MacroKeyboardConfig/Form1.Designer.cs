@@ -56,6 +56,7 @@
 			this.toggleTreeButton = new System.Windows.Forms.Button();
 			this.macroTree = new System.Windows.Forms.TreeView();
 			this.keyMacroDetailsPanel = new System.Windows.Forms.Panel();
+			this.deleteCurActButton = new System.Windows.Forms.Button();
 			this.newActionButton = new System.Windows.Forms.Button();
 			this.delayLabel = new System.Windows.Forms.Label();
 			this.delayTextBox = new System.Windows.Forms.TextBox();
@@ -69,7 +70,6 @@
 			this.textMacroTextbox = new System.Windows.Forms.RichTextBox();
 			this.textMacroLabel = new System.Windows.Forms.Label();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
-			this.deleteCurActButton = new System.Windows.Forms.Button();
 			this.buttonsPanel.SuspendLayout();
 			this.treePanel.SuspendLayout();
 			this.keyMacroDetailsPanel.SuspendLayout();
@@ -188,33 +188,33 @@
 			// 
 			// button6
 			// 
-			this.button6.Enabled = false;
 			this.button6.Location = new System.Drawing.Point(178, 94);
 			this.button6.Name = "button6";
 			this.button6.Size = new System.Drawing.Size(80, 80);
 			this.button6.TabIndex = 5;
 			this.button6.Text = "Macro 6";
 			this.button6.UseVisualStyleBackColor = true;
+			this.button6.Click += new System.EventHandler(this.button6_Click);
 			// 
 			// button5
 			// 
-			this.button5.Enabled = false;
 			this.button5.Location = new System.Drawing.Point(92, 94);
 			this.button5.Name = "button5";
 			this.button5.Size = new System.Drawing.Size(80, 80);
 			this.button5.TabIndex = 4;
 			this.button5.Text = "Macro 5";
 			this.button5.UseVisualStyleBackColor = true;
+			this.button5.Click += new System.EventHandler(this.button5_Click);
 			// 
 			// button4
 			// 
-			this.button4.Enabled = false;
 			this.button4.Location = new System.Drawing.Point(6, 94);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(80, 80);
 			this.button4.TabIndex = 3;
 			this.button4.Text = "Macro 4";
 			this.button4.UseVisualStyleBackColor = true;
+			this.button4.Click += new System.EventHandler(this.button4_Click);
 			// 
 			// button3
 			// 
@@ -415,6 +415,17 @@
 			this.keyMacroDetailsPanel.Size = new System.Drawing.Size(433, 227);
 			this.keyMacroDetailsPanel.TabIndex = 5;
 			// 
+			// deleteCurActButton
+			// 
+			this.deleteCurActButton.ForeColor = System.Drawing.Color.Red;
+			this.deleteCurActButton.Location = new System.Drawing.Point(297, 192);
+			this.deleteCurActButton.Name = "deleteCurActButton";
+			this.deleteCurActButton.Size = new System.Drawing.Size(132, 23);
+			this.deleteCurActButton.TabIndex = 8;
+			this.deleteCurActButton.Text = "Delete Current Action";
+			this.deleteCurActButton.UseVisualStyleBackColor = true;
+			this.deleteCurActButton.Click += new System.EventHandler(this.deleteCurActButton_Click);
+			// 
 			// newActionButton
 			// 
 			this.newActionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -567,17 +578,6 @@
 			this.pictureBox1.Size = new System.Drawing.Size(253, 318);
 			this.pictureBox1.TabIndex = 13;
 			this.pictureBox1.TabStop = false;
-			// 
-			// deleteCurActButton
-			// 
-			this.deleteCurActButton.ForeColor = System.Drawing.Color.Red;
-			this.deleteCurActButton.Location = new System.Drawing.Point(297, 192);
-			this.deleteCurActButton.Name = "deleteCurActButton";
-			this.deleteCurActButton.Size = new System.Drawing.Size(132, 23);
-			this.deleteCurActButton.TabIndex = 8;
-			this.deleteCurActButton.Text = "Delete Current Action";
-			this.deleteCurActButton.UseVisualStyleBackColor = true;
-			this.deleteCurActButton.Click += new System.EventHandler(this.deleteCurActButton_Click);
 			// 
 			// Form1
 			// 

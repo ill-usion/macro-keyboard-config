@@ -43,6 +43,9 @@ namespace MacroKeyboardConfig
 			resetMacroButton.Enabled = true;
 			applyConfigButton.Enabled = true;
 
+			button4.Enabled = true;
+			button5.Enabled = true;
+			button6.Enabled = true;
 			button7.Enabled = true;
 			button8.Enabled = true;
 			button9.Enabled = true;
@@ -58,6 +61,9 @@ namespace MacroKeyboardConfig
 			resetMacroButton.Enabled = false;
 			applyConfigButton.Enabled = false;
 
+			button4.Enabled = false;
+			button5.Enabled = false;
+			button6.Enabled = false;
 			button7.Enabled = false;
 			button8.Enabled = false;
 			button9.Enabled = false;
@@ -88,7 +94,7 @@ namespace MacroKeyboardConfig
 			keySelect.Text = string.Empty;
 			keySelect.Items.Clear();
 
-			if(disablePanels )
+			if (disablePanels)
 			{
 				keyMacroDetailsPanel.Enabled = false;
 				textMacroDetailsPanel.Enabled = false;
@@ -532,34 +538,50 @@ namespace MacroKeyboardConfig
 			DisplayMacroTree(currentMacro);
 		}
 
-		private void button7_Click(object sender, EventArgs e)
+		private void button4_Click(object sender, EventArgs e)
 		{
 			SelectMacro(0, sender);
 		}
 
-		private void button8_Click(object sender, EventArgs e)
+		private void button5_Click(object sender, EventArgs e)
 		{
 			SelectMacro(1, sender);
 		}
 
-		private void button9_Click(object sender, EventArgs e)
+		private void button6_Click(object sender, EventArgs e)
 		{
 			SelectMacro(2, sender);
 		}
 
-		private void button10_Click(object sender, EventArgs e)
+		private void button7_Click(object sender, EventArgs e)
 		{
 			SelectMacro(3, sender);
 		}
 
-		private void button11_Click(object sender, EventArgs e)
+
+		private void button8_Click(object sender, EventArgs e)
 		{
 			SelectMacro(4, sender);
 		}
 
-		private void button12_Click(object sender, EventArgs e)
+		private void button9_Click(object sender, EventArgs e)
 		{
 			SelectMacro(5, sender);
+		}
+
+		private void button10_Click(object sender, EventArgs e)
+		{
+			SelectMacro(6, sender);
+		}
+
+		private void button11_Click(object sender, EventArgs e)
+		{
+			SelectMacro(7, sender);
+		}
+
+		private void button12_Click(object sender, EventArgs e)
+		{
+			SelectMacro(8, sender);
 		}
 
 		private void applyConfigButton_Click(object sender, EventArgs e)
@@ -669,5 +691,6 @@ namespace MacroKeyboardConfig
 			selectedSequenceIndex = -1;
 			ResetInputs(false);
 		}
+
 	}
 }
