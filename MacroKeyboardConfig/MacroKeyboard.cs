@@ -4,6 +4,8 @@ using System.Text;
 using System.IO.Ports;
 using Newtonsoft.Json;
 using System.Threading;
+using System.Windows.Forms;
+using System.Linq;
 
 namespace MacroKeyboardConfig
 {
@@ -14,6 +16,11 @@ namespace MacroKeyboardConfig
 		private readonly int PORT_READ_TIMEOUT_MS = 2000;
 		private readonly int PORT_WRITE_TIMEOUT_MS = 2000;
 		private readonly int SLEEP_BEFORE_READ_TIME_MS = 1000;
+
+		public int Rows { get; private set; }
+		public int Columns { get; private set; }
+		public List<int> Pins { get; private set; }
+		public List<int> ProgrammablePins { get; private set; }
 
 		public MacroKeyboard(string portName)
 		{
@@ -32,6 +39,8 @@ namespace MacroKeyboardConfig
 			};
 
 			Port.Open();
+
+			Identify();
 		}
 
 		public void CloseConnection()
@@ -110,6 +119,7 @@ namespace MacroKeyboardConfig
 							{
 								case SequenceActionType.KEYSTROKE:
 								case SequenceActionType.CONSUMER_KEYSTROKE:
+								case SequenceActionType.CHARACTER_KEYSTROKE:
 									action.Keycode = (ushort)macroData["keycode"];
 									break;
 
@@ -166,6 +176,7 @@ namespace MacroKeyboardConfig
 								{
 									case SequenceActionType.KEYSTROKE:
 									case SequenceActionType.CONSUMER_KEYSTROKE:
+									case SequenceActionType.CHARACTER_KEYSTROKE:
 										action.Keycode = (ushort)macroData["keycode"];
 										break;
 
@@ -200,6 +211,32 @@ namespace MacroKeyboardConfig
 			}
 
 			return macros;
+		}
+
+		private void Identify()
+		{
+			KeyboardEvent keyboardEvent = new KeyboardEvent(KeyboardEventType.IDENTIFY, null);
+			SendEvent(keyboardEvent);
+
+			string response = Port.ReadLine();
+			dynamic info = JsonConvert.DeserializeObject<dynamic>(response);
+			
+			Rows = info["rows"];
+			Columns = info["cols"];
+
+			int nPins = info["nPins"];
+			Pins = new List<int>(nPins);
+			foreach (int p in info["pins"])
+			{
+				Pins.Add(p);
+			}
+
+			int nProgPins = info["nProgPins"];
+			ProgrammablePins = new List<int>(nProgPins);
+			foreach (int p in info["progPins"])
+			{
+				ProgrammablePins.Add(p);
+			}
 		}
 
 		private void SendEvent(KeyboardEvent keyboardEvent, bool flush = true)

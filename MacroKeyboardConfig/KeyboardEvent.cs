@@ -6,6 +6,7 @@ namespace MacroKeyboardConfig
 {
 	public enum KeyboardEventType
 	{
+		IDENTIFY = 'i',
 		READ = 'r',
 		WRITE = 'w',
 		RESET = 'x',
@@ -80,6 +81,7 @@ namespace MacroKeyboardConfig
 						{
 							case SequenceActionType.KEYSTROKE:
 							case SequenceActionType.CONSUMER_KEYSTROKE:
+							case SequenceActionType.CHARACTER_KEYSTROKE:
 								obj["data"][index]["keycode"] = seq.Keycode;
 								break;
 

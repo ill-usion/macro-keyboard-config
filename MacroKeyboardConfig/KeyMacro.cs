@@ -9,7 +9,8 @@ namespace MacroKeyboardConfig
 		RELEASE_ALL = 0x00,
 		KEYSTROKE = 0x01,
 		CONSUMER_KEYSTROKE = 0x02,
-		DELAY = 0x03
+		CHARACTER_KEYSTROKE = 0x03,
+		DELAY = 0x04
 	}
 
 	public struct SequenceAction

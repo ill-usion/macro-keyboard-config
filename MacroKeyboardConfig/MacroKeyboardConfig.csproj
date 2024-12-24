@@ -67,6 +67,10 @@
     <Compile Include="ProgrammableMacro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextMacro.cs" />
+    <Compile Include="VirtualButton.cs" />
+    <Compile Include="VirtualKeyboardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -80,6 +84,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="VirtualKeyboardForm.resx">
+      <DependentUpon>VirtualKeyboardForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

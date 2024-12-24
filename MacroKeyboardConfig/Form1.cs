@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.IO.Ports;
+using System.Collections.Generic;
 
 namespace MacroKeyboardConfig
 {
@@ -17,6 +18,7 @@ namespace MacroKeyboardConfig
 		public bool isTreeToggled = false;
 		public int selectedSequenceIndex = -1;
 		public Button lastSelectedButton = null;
+		public VirtualKeyboardForm vKeyboard;
 
 		public Form1()
 		{
@@ -30,9 +32,42 @@ namespace MacroKeyboardConfig
 
 		private void InitKeyMacroDetails()
 		{
+			string[] actionSelectOpts = { "Release All", "Keystroke", "Consumer Keystroke" };
 			foreach (string action in Enum.GetNames(typeof(SequenceActionType)))
 			{
 				actionSelect.Items.Add(action);
+			}
+		}
+
+		private void SetKeySelectBoxValues(SequenceActionType actionType)
+		{
+			keySelect.Items.Clear();
+
+			switch (actionType)
+			{
+				case SequenceActionType.KEYSTROKE:
+					foreach (string key in Enum.GetNames(typeof(Keycodes)))
+					{
+						keySelect.Items.Add(key);
+					}
+					break;
+				
+				case SequenceActionType.CONSUMER_KEYSTROKE:
+					foreach (string key in Enum.GetNames(typeof(ConsumerKeycodes)))
+					{
+						keySelect.Items.Add(key);
+					}
+					break;
+				
+				case SequenceActionType.CHARACTER_KEYSTROKE:
+					for (char key = '!'; key < '}'; key++)
+					{
+						keySelect.Items.Add(key.ToString());
+					}
+					break;
+
+				default:
+					throw new ArgumentException("Attempt to call SetKeySelectBoxValues on a non-key SequenceActionType");
 			}
 		}
 
@@ -127,6 +162,10 @@ namespace MacroKeyboardConfig
 					keySelect.SelectedText = ((ConsumerKeycodes)sequenceAction.Keycode).ToString();
 					break;
 
+				case SequenceActionType.CHARACTER_KEYSTROKE:
+					keySelect.SelectedText = ((char)sequenceAction.Keycode).ToString();
+					break;
+
 				case SequenceActionType.DELAY:
 					delayTextBox.Text = sequenceAction.Delay.ToString();
 					break;
@@ -188,12 +227,11 @@ namespace MacroKeyboardConfig
 			{
 				if (lastSelectedButton != null)
 				{
-					lastSelectedButton.BackColor = Color.White;
+					lastSelectedButton.ForeColor = DefaultForeColor;
 				}
 
 				Button selectedButton = (Button)sender;
-				selectedButton.BackColor = Color.Lime;
-
+				selectedButton.ForeColor = Color.Lime;
 				lastSelectedButton = selectedButton;
 			}
 
@@ -217,8 +255,8 @@ namespace MacroKeyboardConfig
 				draftTextMacro = currentMacro as TextMacro;
 			}
 
+			selectedSequenceIndex = -1;
 			ResetInputs();
-
 			keyMacroDetailsPanel.Enabled = keyMacroRButton.Checked = (currentMacro.GetType() == MacroType.KEY);
 			textMacroDetailsPanel.Enabled = textMacroRButton.Checked = (currentMacro.GetType() == MacroType.TEXT);
 			EnableMacroTypeSelection();
@@ -253,6 +291,11 @@ namespace MacroKeyboardConfig
 
 						case SequenceActionType.CONSUMER_KEYSTROKE:
 							node.Nodes.Add($"Name: {(ConsumerKeycodes)action.Keycode}");
+							node.Nodes.Add($"Keycode: {action.Keycode}");
+							break;
+
+						case SequenceActionType.CHARACTER_KEYSTROKE:
+							node.Nodes.Add($"Character: {(char)action.Keycode}");
 							node.Nodes.Add($"Keycode: {action.Keycode}");
 							break;
 
@@ -292,60 +335,11 @@ namespace MacroKeyboardConfig
 
 		private void SendArbitraryData()
 		{
-			KeyMacro stepIntoMacro = new KeyMacro(0);
-			stepIntoMacro.addAction(new SequenceAction { Type = SequenceActionType.KEYSTROKE, Keycode = (ushort)Keycodes.F11 });
-			stepIntoMacro.addAction(new SequenceAction { Type = SequenceActionType.DELAY, Delay = 100 });
-			stepIntoMacro.addAction(new SequenceAction { Type = SequenceActionType.RELEASE_ALL });
+			KeyMacro km = new KeyMacro(0);
+			km.addAction(new SequenceAction { Type = SequenceActionType.CHARACTER_KEYSTROKE, Keycode = '!' });
 			DisableButtons();
-			keyboard.SetMacro(stepIntoMacro);
+			keyboard.SetMacro(km);
 			EnableButtons();
-
-			KeyMacro stepOverMacro = new KeyMacro(1);
-			stepOverMacro.addAction(new SequenceAction { Type = SequenceActionType.KEYSTROKE, Keycode = (ushort)Keycodes.F10 });
-			stepOverMacro.addAction(new SequenceAction { Type = SequenceActionType.DELAY, Delay = 100 });
-			stepOverMacro.addAction(new SequenceAction { Type = SequenceActionType.RELEASE_ALL });
-			DisableButtons();
-			keyboard.SetMacro(stepOverMacro);
-			EnableButtons();
-
-			KeyMacro stepOutMacro = new KeyMacro(2);
-			stepOutMacro.addAction(new SequenceAction { Type = SequenceActionType.KEYSTROKE, Keycode = (ushort)Keycodes.LEFT_SHIFT });
-			stepOutMacro.addAction(new SequenceAction { Type = SequenceActionType.DELAY, Delay = 10 });
-			stepOutMacro.addAction(new SequenceAction { Type = SequenceActionType.KEYSTROKE, Keycode = (ushort)Keycodes.F11 });
-			stepOutMacro.addAction(new SequenceAction { Type = SequenceActionType.DELAY, Delay = 100 });
-			stepOutMacro.addAction(new SequenceAction { Type = SequenceActionType.RELEASE_ALL });
-			DisableButtons();
-			keyboard.SetMacro(stepOutMacro);
-			EnableButtons();
-
-
-			KeyMacro mediaPrevMacro = new KeyMacro(3);
-			mediaPrevMacro.addAction(new SequenceAction { Type = SequenceActionType.CONSUMER_KEYSTROKE, Keycode = (ushort)ConsumerKeycodes.MEDIA_PREV });
-			mediaPrevMacro.addAction(new SequenceAction { Type = SequenceActionType.DELAY, Delay = 100 });
-			mediaPrevMacro.addAction(new SequenceAction { Type = SequenceActionType.RELEASE_ALL });
-			DisableButtons();
-			keyboard.SetMacro(mediaPrevMacro);
-			EnableButtons();
-
-			KeyMacro playPauseMacro = new KeyMacro(4);
-			playPauseMacro.addAction(new SequenceAction { Type = SequenceActionType.CONSUMER_KEYSTROKE, Keycode = (ushort)ConsumerKeycodes.MEDIA_PLAY_PAUSE });
-			playPauseMacro.addAction(new SequenceAction { Type = SequenceActionType.DELAY, Delay = 100 });
-			playPauseMacro.addAction(new SequenceAction { Type = SequenceActionType.RELEASE_ALL });
-			DisableButtons();
-			keyboard.SetMacro(playPauseMacro);
-			EnableButtons();
-
-			KeyMacro mediaNextMacro = new KeyMacro(5);
-			mediaNextMacro.addAction(new SequenceAction { Type = SequenceActionType.CONSUMER_KEYSTROKE, Keycode = (ushort)ConsumerKeycodes.MEDIA_NEXT });
-			mediaNextMacro.addAction(new SequenceAction { Type = SequenceActionType.DELAY, Delay = 100 });
-			mediaNextMacro.addAction(new SequenceAction { Type = SequenceActionType.RELEASE_ALL });
-			DisableButtons();
-			keyboard.SetMacro(mediaNextMacro);
-			EnableButtons();
-
-			TextMacro tm = new TextMacro(0);
-			tm.SetText("Hello, World!");
-			// MessageBox.Show(keyboard.SetMacro(tm));
 		}
 
 
@@ -399,6 +393,11 @@ namespace MacroKeyboardConfig
 			int macroIndex = currentMacro.GetIndex();
 			MessageBox.Show(keyboard.ResetMacro(macroIndex));
 			EnableButtons();
+			
+			currentMacro = new KeyMacro(macroIndex);
+			draftKeyMacro = (KeyMacro)currentMacro;
+			draftTextMacro = null;
+			selectedSequenceIndex = -1;
 
 			ResetMacroTree();
 		}
@@ -462,31 +461,37 @@ namespace MacroKeyboardConfig
 			{
 				case SequenceActionType.KEYSTROKE:
 					keySelect.Enabled = true;
+					selectKeyButton.Enabled = true;
 					delayTextBox.Enabled = false;
-					foreach (string key in Enum.GetNames(typeof(Keycodes)))
-					{
-						keySelect.Items.Add(key);
-					}
+					SetKeySelectBoxValues(SequenceActionType.KEYSTROKE);
 					delayTextBox.Text = string.Empty;
 					break;
 
 				case SequenceActionType.CONSUMER_KEYSTROKE:
 					keySelect.Enabled = true;
+					selectKeyButton.Enabled = true;
 					delayTextBox.Enabled = false;
-					foreach (string key in Enum.GetNames(typeof(ConsumerKeycodes)))
-					{
-						keySelect.Items.Add(key);
-					}
+					SetKeySelectBoxValues(SequenceActionType.CONSUMER_KEYSTROKE);
+					delayTextBox.Text = string.Empty;
+					break;
+
+				case SequenceActionType.CHARACTER_KEYSTROKE:
+					keySelect.Enabled = true;
+					selectKeyButton.Enabled = true;
+					delayTextBox.Enabled = false;
+					SetKeySelectBoxValues(SequenceActionType.CHARACTER_KEYSTROKE);
 					delayTextBox.Text = string.Empty;
 					break;
 
 				case SequenceActionType.DELAY:
 					keySelect.Enabled = false;
+					selectKeyButton.Enabled = false;
 					delayTextBox.Enabled = true;
 					break;
 
 				default:
 					keySelect.Enabled = false;
+					selectKeyButton.Enabled = false;
 					delayTextBox.Enabled = false;
 					delayTextBox.Text = string.Empty;
 					break;
@@ -616,6 +621,10 @@ namespace MacroKeyboardConfig
 			{
 				selectedSequence.Keycode = (ushort)(ConsumerKeycodes)Enum.Parse(typeof(ConsumerKeycodes), selectedText);
 			}
+			else if (selectedSequence.Type == SequenceActionType.CHARACTER_KEYSTROKE)
+			{
+				selectedSequence.Keycode = selectedText[0];
+			}
 
 			keyMacro.SequenceActions[selectedSequenceIndex] = selectedSequence;
 			currentMacro = keyMacro;
@@ -637,6 +646,12 @@ namespace MacroKeyboardConfig
 			SequenceAction selectedSequence = keyMacro.SequenceActions[selectedSequenceIndex];
 			if (selectedSequence.Type != SequenceActionType.DELAY)
 				return;
+
+			if(selectedSequenceIndex >= keyMacro.SequenceActions.Count)
+			{
+				selectedSequenceIndex = -1;
+				return;
+			}
 
 			if (!ushort.TryParse(delayTextBox.Text, out ushort newValue))
 			{
@@ -692,5 +707,45 @@ namespace MacroKeyboardConfig
 			ResetInputs(false);
 		}
 
+		private void selectKeyButton_Click(object sender, EventArgs e)
+		{
+			vKeyboard = new VirtualKeyboardForm();
+			vKeyboard.ShowDialog(this);
+			
+			SequenceActionType seqType = vKeyboard.GetSequenceActionType();
+
+			if (seqType == SequenceActionType.RELEASE_ALL || seqType == SequenceActionType.DELAY)
+				return;
+
+			actionSelect.Text = seqType.ToString();
+			actionSelect_SelectedIndexChanged(null, null);
+			SetKeySelectBoxValues(seqType);
+
+			switch (seqType)
+			{
+				case SequenceActionType.KEYSTROKE:
+					{
+						Keycodes keycode = (Keycodes)vKeyboard.GetSelectedKey();
+						keySelect.Text = keycode.ToString();
+						break;
+					}
+
+				case SequenceActionType.CONSUMER_KEYSTROKE:
+					{
+						ConsumerKeycodes keycode = (ConsumerKeycodes)vKeyboard.GetSelectedKey();
+						keySelect.Text = keycode.ToString();
+						break;
+					}
+				case SequenceActionType.CHARACTER_KEYSTROKE:
+					{
+						char keycode = (char)vKeyboard.GetSelectedKey();
+						keySelect.Text = keycode.ToString();
+						break;
+					}
+
+				default:
+					throw new Exception("This shouldn't happen");
+			}
+		}
 	}
 }

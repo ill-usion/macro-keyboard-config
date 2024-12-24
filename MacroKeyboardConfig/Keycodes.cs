@@ -1,4 +1,6 @@
-﻿namespace MacroKeyboardConfig
+﻿using System;
+
+namespace MacroKeyboardConfig
 {
 	public enum Keycodes : ushort
 	{

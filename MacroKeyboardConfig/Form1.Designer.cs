@@ -43,6 +43,7 @@
 			this.button3 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
+			this.selectKeyButton = new System.Windows.Forms.Button();
 			this.portsSelect = new System.Windows.Forms.ComboBox();
 			this.listPortsButton = new System.Windows.Forms.Button();
 			this.selectButton = new System.Windows.Forms.Button();
@@ -70,6 +71,7 @@
 			this.textMacroTextbox = new System.Windows.Forms.RichTextBox();
 			this.textMacroLabel = new System.Windows.Forms.Label();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.testButton = new System.Windows.Forms.Button();
 			this.buttonsPanel.SuspendLayout();
 			this.treePanel.SuspendLayout();
 			this.keyMacroDetailsPanel.SuspendLayout();
@@ -80,6 +82,7 @@
 			// buttonsPanel
 			// 
 			this.buttonsPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.buttonsPanel.Controls.Add(this.testButton);
 			this.buttonsPanel.Controls.Add(this.button10);
 			this.buttonsPanel.Controls.Add(this.resetKeyboardButton);
 			this.buttonsPanel.Controls.Add(this.button12);
@@ -246,6 +249,18 @@
 			this.button1.Text = "Macro 1";
 			this.button1.UseVisualStyleBackColor = true;
 			// 
+			// selectKeyButton
+			// 
+			this.selectKeyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.selectKeyButton.Enabled = false;
+			this.selectKeyButton.Location = new System.Drawing.Point(354, 59);
+			this.selectKeyButton.Name = "selectKeyButton";
+			this.selectKeyButton.Size = new System.Drawing.Size(75, 23);
+			this.selectKeyButton.TabIndex = 9;
+			this.selectKeyButton.Text = "Select";
+			this.selectKeyButton.UseVisualStyleBackColor = true;
+			this.selectKeyButton.Click += new System.EventHandler(this.selectKeyButton_Click);
+			// 
 			// portsSelect
 			// 
 			this.portsSelect.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -303,6 +318,8 @@
 			// 
 			// macroTypeLabel
 			// 
+			this.macroTypeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.macroTypeLabel.AutoSize = true;
 			this.macroTypeLabel.Location = new System.Drawing.Point(13, 407);
 			this.macroTypeLabel.Name = "macroTypeLabel";
@@ -395,11 +412,11 @@
 			// 
 			// keyMacroDetailsPanel
 			// 
-			this.keyMacroDetailsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+			this.keyMacroDetailsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.keyMacroDetailsPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.keyMacroDetailsPanel.BackColor = System.Drawing.SystemColors.Control;
+			this.keyMacroDetailsPanel.Controls.Add(this.selectKeyButton);
 			this.keyMacroDetailsPanel.Controls.Add(this.deleteCurActButton);
 			this.keyMacroDetailsPanel.Controls.Add(this.newActionButton);
 			this.keyMacroDetailsPanel.Controls.Add(this.delayLabel);
@@ -417,6 +434,7 @@
 			// 
 			// deleteCurActButton
 			// 
+			this.deleteCurActButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.deleteCurActButton.ForeColor = System.Drawing.Color.Red;
 			this.deleteCurActButton.Location = new System.Drawing.Point(297, 192);
 			this.deleteCurActButton.Name = "deleteCurActButton";
@@ -471,7 +489,7 @@
 			this.keySelect.MaximumSize = new System.Drawing.Size(375, 0);
 			this.keySelect.MinimumSize = new System.Drawing.Size(175, 0);
 			this.keySelect.Name = "keySelect";
-			this.keySelect.Size = new System.Drawing.Size(375, 21);
+			this.keySelect.Size = new System.Drawing.Size(294, 21);
 			this.keySelect.Sorted = true;
 			this.keySelect.TabIndex = 4;
 			this.keySelect.SelectedIndexChanged += new System.EventHandler(this.keySelect_SelectedIndexChanged);
@@ -538,7 +556,7 @@
 			// 
 			// clearTextButton
 			// 
-			this.clearTextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.clearTextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.clearTextButton.Location = new System.Drawing.Point(354, 199);
 			this.clearTextButton.Name = "clearTextButton";
 			this.clearTextButton.Size = new System.Drawing.Size(75, 23);
@@ -579,6 +597,17 @@
 			this.pictureBox1.TabIndex = 13;
 			this.pictureBox1.TabStop = false;
 			// 
+			// testButton
+			// 
+			this.testButton.Location = new System.Drawing.Point(9, 381);
+			this.testButton.Name = "testButton";
+			this.testButton.Size = new System.Drawing.Size(75, 23);
+			this.testButton.TabIndex = 14;
+			this.testButton.Text = "TEST";
+			this.testButton.UseVisualStyleBackColor = true;
+			this.testButton.Visible = false;
+			this.testButton.Click += new System.EventHandler(this.testButton_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -588,7 +617,7 @@
 			this.Controls.Add(this.textMacroDetailsPanel);
 			this.Controls.Add(this.keyMacroDetailsPanel);
 			this.Controls.Add(this.treePanel);
-			this.MinimumSize = new System.Drawing.Size(820, 420);
+			this.MinimumSize = new System.Drawing.Size(1000, 500);
 			this.Name = "Form1";
 			this.Text = "Macro Keyboard Config";
 			this.Load += new System.EventHandler(this.Form1_Load);
@@ -649,6 +678,8 @@
 		private System.Windows.Forms.Label actionListLabel;
 		private System.Windows.Forms.Label macroTypeLabel;
 		private System.Windows.Forms.Button deleteCurActButton;
+		private System.Windows.Forms.Button selectKeyButton;
+		private System.Windows.Forms.Button testButton;
 	}
 }
 
